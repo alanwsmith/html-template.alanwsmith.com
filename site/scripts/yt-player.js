@@ -35,34 +35,30 @@ class YouTubePlayer extends HTMLElement {
     const playButtonEl = document.createElement('button');
     playButtonEl.innerHTML = "Play";
     playButtonEl.addEventListener("click", (event) => {
-      this.doPlay.call(this, event, this.player)
+      this.doPlayPause.call(this, event, this.player)
     });
     this.appendChild(playButtonEl);
   }
 
-  doPlay(event, player) {
-    event.target.innerHTML = "clicked";
+  doPlayPause(event, player) {
+    const buttonEl = event.target;
     const playerStatus = player.getPlayerState();
-    if (playerStatus == -1) {
-      // player is in unstarted state which should
-      // have the video loaded and be ready to play.
-      // The docs don't list a YT.PlayerState.UNSTARTED
-      // flag so using the explicit `-1` instead
+    // The docs don't list a YT.PlayerState.UNSTARTED
+    // flag so using the explicit `-1` instead
+    if (
+      playerStatus == -1 ||
+      playerStatus == YT.PlayerState.ENDED ||
+      playerStatus == YT.PlayerState.PAUSED ||
+      playerStatus == YT.PlayerState.BUFFERING ||
+      playerStatus == YT.PlayerState.CUED
+    ) {
       player.playVideo();
-    } else if (playerStatus == 0) {
-      console.log("ytPlayer: ended")
-    } else if (playerStatus == YT.PlayerState.PLAYING) {
-      player.pauseVideo()
-    } else if (playerStatus == YT.PlayerState.PAUSED) {
-      player.playVideo();
-    } else if (playerStatus == YT.PlayerState.BUFFERING) {
-      // can't entirely tell from the docs, but it seems
-      // like it's okay to trigger playVideo() here and
-      // it will just play as soon as it can. TBD on
-      // figuring out a way to test/verify that.
-      player.playVideo();
-    } else if (playerStatus == YT.PlayerState.CUED) {
-      player.playVideo();
+      buttonEl.innerHTML = "Pause";
+      // TODO: Figure out how to shift focus to
+      // the player so keyboard controls work
+    } else {
+      player.pauseVideo();
+      buttonEl.innerHTML = "Play";
     }
   }
 

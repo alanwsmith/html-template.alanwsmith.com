@@ -9,6 +9,8 @@ class YouTubePlayer extends HTMLElement {
   }
 
   async init() {
+    this.videoId = this.getAttribute("video");
+    this.startSeconds = this.getAttribute("start") !== null ? parseInt(this.getAttribute("start"), 10) : 0;
     this.loadApi();
     await this.apiLoader;
     const videoPlaceholderEl = document.createElement('div')
@@ -17,8 +19,11 @@ class YouTubePlayer extends HTMLElement {
         let player = new YT.Player(videoPlaceholderEl, {
             width: "320",
             height: "195",
-            videoId: this.dataset.id,
-            playerVars: {},
+            videoId: this.videoId,
+            playerVars: {
+              "playsinline": 1,
+              "start": this.startSeconds
+            },
             events: {
                 "onReady": event => {
                     resolve(player);

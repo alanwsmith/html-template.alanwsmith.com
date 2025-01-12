@@ -21,19 +21,17 @@
     <meta property="og:description" content="My HTML template for getting started with a new site" />
     <meta name="description" content="My HTML template for getting started with a new site" />
 
-    <script type="module" src="/scripts/yt-player.js"></script>
-
     <!--
       <link rel="stylesheet" href="/styles/main.css" />
       <script type="module" src="/script/example.js"></script>
     -->
 
+    <script type="module" src="/scripts/yt-player.js"></script>
     <style>
 
 :root {
-  --background-color: #ddd;
-  --background-color-2: #ddd;
-  --primary-color: black;
+  --background-color: #121;
+  --primary-color: #aaa;;
   --secondary-color: blue;
   --accent-color-1: green;
   --accent-color-2: purple;
@@ -233,10 +231,19 @@ ul > :where(:not(:first-child)) {
 .yt-play-button {
   width: 7ch;
 }
+
+yt-player {
+  min-height: 12rem;
+  background-color: blue;
+}
+
+.yt-speed-button {
+  width: 5ch;
+}
+
 .yt-stop-button {
   width: 6ch;
 }
-
 
     </style>
   </head>
@@ -251,56 +258,65 @@ ul > :where(:not(:first-child)) {
         <h1>Alan's HTML Template</h1>
         <p>A copy/paste way to start a new site</p>
       </hgroup>
-      <section class="flow">
-        <h2>Introduction</h2>
-        <p>I like using sub-domains for experiments. 
-          You can check them out at <a href="https://links.alanwsmith.com/">links.alanwsmith.com</a>.
-          This page and
-          its supporting files are my current template for getting
-          started with a new one.
-        </p>
-        <p>
-          Most of the sites start off as 
-          single pages. I include the styles and scripts in the 
-          page directly as a result. 
-        </p>
-        <h2>YouTube Embed Example</h2>
+      <h2>Introduction</h2>
+      <p>I like using sub-domains for experiments. 
+        You can check them out at <a href="https://links.alanwsmith.com/">links.alanwsmith.com</a>.
+        This page and
+        its supporting files are my current template for getting
+        started with a new one.
+      </p>
+      <p>
+        Most of the sites start off as 
+        single pages. I include the styles and scripts in the 
+        page directly as a result. 
+      </p>
+      <h2>Work-In-Progress</h2>
+      <p>
+        The first version of this template is still under development.
+        Current work is focused on the youtube embedding web component
+        which will reside here: 
+        <a href="https://yt-player.alanwsmith.com/">yt-player.alanwsmith.com</a>
+      </p>
 
-        <yt-player video="_YUzQa_1RCE">
-            <noscript>JavaScript not available to load YouTube player</noscript>
-        </yt-player>
-        <yt-player video="JSkn4zaUh78" start="5" >
-            <noscript>JavaScript not available to load YouTube player</noscript>
-        </yt-player>
 
-        <h2>Notes</h2>
-        <ul>
-          <li>
-            The main content area is centered vertically if it's 
-            not large enough to fill the screen
-          </li>
-          <li>
-            The page includes the YouTube IFrame API for loading videos
-            programmatically. It doesn't attempt to auto-start. 
-          </li>
-          <li>
-            TODO: The YouTube embed can be used with multiple videos
-            on the page
-          </li>
-          <li>
-            TODO: The YouTube embed automatically adds control buttons
-          </li>
-        </ul>
-        <h2>References</h2>
-        <ul>
-          <li><a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame Player API Docs</a></li>
-          <li><a href="https://github.com/paulirish/lite-youtube-embed">Paul Irish's Lite YouTube Embed</a></li>
-        </ul>
-        <h2>This is an H2 Headline</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras malesuada finibus risus sit amet gravida. Sed id nibh non ipsum convallis commodo.</p>
-        <p>Nullam ornare luctus semper. Donec libero sem, dapibus id nibh non, venenatis pretium diam. Sed elementum, tortor vel euismod accumsan, mi risus posuere magna, non volutpat velit nulla vel leo.</p>
-        <p>Pellentesque eget ex eleifend, interdum arcu ut, pulvinar risus. Praesent placerat eu libero id ultricies.</p>
-      </section>
+      <h2>YouTube Embed Example</h2>
+      <yt-player video="_YUzQa_1RCE">
+      </yt-player>
+      <yt-player video="JSkn4zaUh78" start="5">
+      </yt-player>
+
+      <h2>Notes</h2>
+      <ul>
+        <li>
+          The main content area is centered vertically if it's 
+          not large enough to fill the screen
+        </li>
+        <li>
+          The page includes the YouTube IFrame API for loading videos
+          programmatically. It doesn't attempt to auto-start. 
+        </li>
+        <li>
+          TODO: The YouTube embed can be used with multiple videos
+          on the page
+        </li>
+        <li>
+          TODO: The YouTube embed automatically adds control buttons
+        </li>
+        <li>
+          TODO: Provide a light/dark mode color switcher
+        </li>
+        <li>
+          TODO: Responsive images
+        </li>
+        <li>
+          TODO: Responsive videos
+        </li>
+      </ul>
+
+      <h2>This is an H2 Example Headline</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras malesuada finibus risus sit amet gravida. Sed id nibh non ipsum convallis commodo.</p>
+      <p>Nullam ornare luctus semper. Donec libero sem, dapibus id nibh non, venenatis pretium diam. Sed elementum, tortor vel euismod accumsan, mi risus posuere magna, non volutpat velit nulla vel leo.</p>
+      <p>Pellentesque eget ex eleifend, interdum arcu ut, pulvinar risus. Praesent placerat eu libero id ultricies.</p>
     </main>
 
     <footer>

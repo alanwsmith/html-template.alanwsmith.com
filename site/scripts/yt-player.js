@@ -1,18 +1,20 @@
+// TODO: Figure out if there's away to tell if the
+// video isn't available and send a better message
+// than the youtube default one. or maybe play 
+// a different video all together 
+
 class YouTubePlayer extends HTMLElement {
   connectedCallback() {
     console.log(this.dataset.id);
-    this.addPlayer();
-    //this.makePlayerEl();
-    //this.makeButtons();
-    //this.loadYouTubeApi();
+    this.init();
   }
 
-  async addPlayer() {
+  async init() {
     this.loadApi();
     await this.apiLoader;
     const videoPlaceholderEl = document.createElement('div')
     this.append(videoPlaceholderEl);
-    this.playerPromise = new Promise(resolve => {
+    this.player = await new Promise(resolve => {
         let player = new YT.Player(videoPlaceholderEl, {
             width: "320",
             height: "195",
@@ -24,17 +26,15 @@ class YouTubePlayer extends HTMLElement {
                 }
             }
         });
-    });
+    }).then((value) => {return value});
+    this.addButtons();
+    // TODO: Figure out how to handle errors here. 
   }
 
-  makeButtons() {
+  addButtons() {
     const playButtonEl = document.createElement('button');
     playButtonEl.innerHTML = "Play";
     this.appendChild(playButtonEl)
-  }
-
-  makePlayerEl() {
-
   }
 
   loadApi() {

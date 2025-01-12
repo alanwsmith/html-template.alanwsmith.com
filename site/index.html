@@ -28,7 +28,7 @@
     <style>
 
 :root {
-  --background-color: white;
+  --background-color: #ddd;
   --background-color-2: #ddd;
   --primary-color: black;
   --secondary-color: blue;
@@ -55,14 +55,14 @@
   --xxlarge-padding: 3.2em;
   --xxxlarge-padding: 3.2em;
 
-  --xxsmall-radius: 0.1rem;
-  --xsmall-radius: 0.2rem;
-  --small-radius: 0.3rem;
-  --medium-radius: 0.4rem;
-  --large-radius: 0.5rem;
-  --xlarge-radius: 0.6rem;
-  --xxlarge-radius: 0.7rem;
-  --xxxlarge-radius: 0.9rem;
+  --xxsmall-border-radius: 0.1rem;
+  --xsmall-border-radius: 0.2rem;
+  --small-border-radius: 0.3rem;
+  --medium-border-radius: 0.4rem;
+  --large-border-radius: 0.5rem;
+  --xlarge-border-radius: 0.6rem;
+  --xxlarge-border-radius: 0.7rem;
+  --xxxlarge-border-radius: 0.9rem;
 
   --xxsmall-font-size: clamp(0.68rem, calc(0.67rem + 0.03vw), 0.70rem);
   --xsmall-font-size: clamp(0.78rem, calc(0.77rem + 0.03vw), 0.80rem);
@@ -128,6 +128,20 @@ a:hover, a:focus {
   color: var(--accent-color-2);
 }
 
+.blue {
+  color: blue;
+}
+
+button {
+  background: none;
+  border: 1px solid var(--accent-color-1);
+  border-radius: var(--medium-border-radius);
+  color: var(--accent-color-1);
+  cursor: pointer;
+  font-size: var(--small-font-size);
+  outline: none;
+}
+
 .flow > :where(:not(:first-child)) {
   margin-top: var(--flow-space, 1.0em);
 }
@@ -137,6 +151,10 @@ footer {
   margin-bottom: var(--large-margin);
   font-size: var(--small-font-size);
   text-align: center;
+}
+
+.green {
+  color: green;
 }
 
 h1, h2, h3, h4 {
@@ -197,6 +215,10 @@ main {
 }
 */
 
+.red {
+  color: red;
+}
+
 section {
   --flow-space: 1.3em;
 }
@@ -232,12 +254,9 @@ ul > :where(:not(:first-child)) {
         </p>
         <h2>YouTube Embed Example</h2>
 
-        <div class="ytVideo">
-          <div id="ytPlayer1">
+        <yt-player data-id="_YUzQa_1RCE">
             <noscript>JavaScript not available to load YouTube player</noscript>
-          </div>
-          <div id="ytButtons1"></div>
-        </div>
+        </yt-player>
 
         <h2>Notes</h2>
         <ul>
@@ -249,10 +268,18 @@ ul > :where(:not(:first-child)) {
             The page includes the YouTube IFrame API for loading videos
             programmatically. It doesn't attempt to auto-start. 
           </li>
+          <li>
+            TODO: The YouTube embed can be used with multiple videos
+            on the page
+          </li>
+          <li>
+            TODO: The YouTube embed automatically adds control buttons
+          </li>
         </ul>
         <h2>References</h2>
         <ul>
           <li><a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame Player API Docs</a></li>
+          <li><a href="https://github.com/paulirish/lite-youtube-embed">Paul Irish's Lite YouTube Embed</a></li>
         </ul>
         <h2>This is an H2 Headline</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras malesuada finibus risus sit amet gravida. Sed id nibh non ipsum convallis commodo.</p>
@@ -270,16 +297,18 @@ ul > :where(:not(:first-child)) {
       </div>
     </footer>
 
+    <!--
     <script>
-      var tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      var player;
+
+      var tag = document.createElement("script")
+      tag.src = "https://www.youtube.com/iframe_api"
+      var firstScriptTag = document.getElementsByTagName("script")[0]
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+      const ytPlayers = []
       function onYouTubeIframeAPIReady() {
-        player = new YT.Player("ytPlayer1", {
-          height: "390",
-          width: "640",
+        ytPlayers[0] = new YT.Player("ytPlayer-1", {
+          height: "195",
+          width: "320",
           videoId: "_YUzQa_1RCE",
           playerVars: {
             "playsinline": 1
@@ -288,16 +317,15 @@ ul > :where(:not(:first-child)) {
             "onReady": onPlayerReady,
             "onStateChange": onPlayerStateChange
           }
-        });
+        })
       }
 
       function onPlayerReady(event) {
         console.log("ytPlayer: ready")
-        addYtButtons("ytButtons1")
+        addYtButtons(event.target)
       }
 
       function onPlayerStateChange(event) {
-        console.log(event)
         if (event.data == -1) {
           console.log("ytPlayer: unstarted")
         } else if (playerStatus == 0) {
@@ -313,13 +341,23 @@ ul > :where(:not(:first-child)) {
         }
       }
 
-      function addYtButtons(wrapperId) {
-        const buttonWrapper = document.querySelector(`#${wrapperId}`)
-        const playButton = document.createElement("button")
-
+      function addYtButtons(player) {
+        const playerEl = player.g
+        const playerWrapper = playerEl.parentElement
+        const buttonWrapperEl = document.createElement("div")
+        const playButtonEl = document.createElement("button")
+        playButtonEl.innerHTML = "Play"
+        playButtonEl.addEventListener("click", (event, playerEl) => { playVideo(event, playerEl) })
+        buttonWrapperEl.appendChild(playButtonEl)
+        playerWrapper.appendChild(buttonWrapperEl)
       }
 
-
+      function playVideo(event, playerEl) {
+        console.log(event)
+        console.log(playerEl)
+      }
     </script>
+-->
+    <script type="module" src="/scripts/yt-loader.js"></script>
   </body>
 </html>

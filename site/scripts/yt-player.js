@@ -5,7 +5,6 @@
 
 class YouTubePlayer extends HTMLElement {
   connectedCallback() {
-    console.log(this.dataset.id);
     this.init();
   }
 
@@ -35,7 +34,10 @@ class YouTubePlayer extends HTMLElement {
   }
 
   onPlayerStateChange(event) {
-    console.log(event);
+    // TODO: Figure out if there's a way to make the
+    // text switch from play to pause as soon as the
+    // video itself is clicked (right now there's a
+    // little delay)
     const playerState = event.target.getPlayerState();
     if (playerState == -1) {
       // unstarted
@@ -44,24 +46,29 @@ class YouTubePlayer extends HTMLElement {
     } else if (playerState == YT.PlayerState.CUED) {
       // cued
     } else if (playerState == YT.PlayerState.ENDED) {
-      // ended
       this.playButton.innerHTML = "Play";
     } else if (playerState == YT.PlayerState.PAUSED) {
-      // paused
       this.playButton.innerHTML = "Play";
     } else if (playerState == YT.PlayerState.PLAYING) {
-      // playing 
       this.playButton.innerHTML = "Pause";
     }
   }
 
   addButtons(player) {
-    this.playButton = document.createElement('button');
+    this.playButton = document.createElement("button");
     this.playButton.innerHTML = "Play";
+    this.playButton.classList.add("yt-play-button");
     this.playButton.addEventListener("click", (event) => {
       this.doPlayPause.call(this, event, this.player)
     });
     this.appendChild(this.playButton);
+    this.stopButton = document.createElement("button");
+    this.stopButton.innerHTML = "Stop";
+    this.stopButton.classList.add("yt-stop-button");
+    this.stopButton.addEventListener("click", (event) => {
+      this.doStop.call(this, event, this.player)
+    });
+    this.appendChild(this.stopButton);
   }
 
   doPlayPause(event, player) {
@@ -77,11 +84,21 @@ class YouTubePlayer extends HTMLElement {
       playerState == YT.PlayerState.CUED
     ) {
       player.playVideo();
+      this.playButton.innerHTML = "Pause";
       // TODO: Figure out how to shift focus to
       // the player so keyboard controls work
     } else {
       player.pauseVideo();
+      this.playButton.innerHTML = "Play";
+      // TODO: adjust this so it doesn't flash
+      // play when clicking to different parts
+      // of the video
     }
+  }
+
+  doStop(event, player) {
+    this.playButton.innerHTML = "Play";
+    player.stopVideo();
   }
 
   loadApi() {
@@ -103,8 +120,8 @@ class YouTubePlayer extends HTMLElement {
         this.append(el);
     });
   }
-
 }
+
 customElements.define('yt-player', YouTubePlayer);
 
 /*

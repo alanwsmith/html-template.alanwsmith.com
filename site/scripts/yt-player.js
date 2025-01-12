@@ -23,6 +23,9 @@ class YouTubePlayer extends HTMLElement {
             events: {
                 "onReady": event => {
                     resolve(player);
+                },
+                "onStateChange": (event) => {
+                  this.onPlayerStateChange.call(this, event);
                 }
             }
         });
@@ -31,34 +34,53 @@ class YouTubePlayer extends HTMLElement {
     // TODO: Figure out how to handle errors here. 
   }
 
+  onPlayerStateChange(event) {
+    console.log(event);
+    const playerState = event.target.getPlayerState();
+    if (playerState == -1) {
+      // unstarted
+    } else if (playerState == YT.PlayerState.BUFFERING) {
+      // buffering 
+    } else if (playerState == YT.PlayerState.CUED) {
+      // cued
+    } else if (playerState == YT.PlayerState.ENDED) {
+      // ended
+      this.playButton.innerHTML = "Play";
+    } else if (playerState == YT.PlayerState.PAUSED) {
+      // paused
+      this.playButton.innerHTML = "Play";
+    } else if (playerState == YT.PlayerState.PLAYING) {
+      // playing 
+      this.playButton.innerHTML = "Pause";
+    }
+  }
+
   addButtons(player) {
-    const playButtonEl = document.createElement('button');
-    playButtonEl.innerHTML = "Play";
-    playButtonEl.addEventListener("click", (event) => {
+    this.playButton = document.createElement('button');
+    this.playButton.innerHTML = "Play";
+    this.playButton.addEventListener("click", (event) => {
       this.doPlayPause.call(this, event, this.player)
     });
-    this.appendChild(playButtonEl);
+    this.appendChild(this.playButton);
   }
 
   doPlayPause(event, player) {
     const buttonEl = event.target;
-    const playerStatus = player.getPlayerState();
+    const playerState = player.getPlayerState();
     // The docs don't list a YT.PlayerState.UNSTARTED
     // flag so using the explicit `-1` instead
     if (
-      playerStatus == -1 ||
-      playerStatus == YT.PlayerState.ENDED ||
-      playerStatus == YT.PlayerState.PAUSED ||
-      playerStatus == YT.PlayerState.BUFFERING ||
-      playerStatus == YT.PlayerState.CUED
+      playerState == -1 ||
+      playerState == YT.PlayerState.ENDED ||
+      playerState == YT.PlayerState.PAUSED ||
+      playerState == YT.PlayerState.BUFFERING ||
+      playerState == YT.PlayerState.CUED
     ) {
       player.playVideo();
-      buttonEl.innerHTML = "Pause";
       // TODO: Figure out how to shift focus to
       // the player so keyboard controls work
     } else {
       player.pauseVideo();
-      buttonEl.innerHTML = "Play";
     }
   }
 
@@ -114,15 +136,15 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
   if (event.data == -1) {
     console.log("ytPlayer: unstarted")
-  } else if (playerStatus == 0) {
+  } else if (playerState == 0) {
     console.log("ytPlayer: ended")
-  } else if (playerStatus == 1) {
+  } else if (playerState == 1) {
     console.log("ytPlayer: playing")
-  } else if (playerStatus == 2) {
+  } else if (playerState == 2) {
     console.log("ytPlayer: paused")
-  } else if (playerStatus == 3) {
+  } else if (playerState == 3) {
     console.log("ytPlayer: buffering")
-  } else if (playerStatus == 5) {
+  } else if (playerState == 5) {
     console.log("ytPlayer: cued")
   }
 }

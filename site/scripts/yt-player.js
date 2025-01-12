@@ -27,14 +27,23 @@ class YouTubePlayer extends HTMLElement {
             }
         });
     }).then((value) => {return value});
-    this.addButtons();
+    this.addButtons(this.player);
     // TODO: Figure out how to handle errors here. 
   }
 
-  addButtons() {
+  addButtons(player) {
     const playButtonEl = document.createElement('button');
     playButtonEl.innerHTML = "Play";
-    this.appendChild(playButtonEl)
+    playButtonEl.addEventListener("click", () => {
+      this.doPlay.call(this, this.player)
+    });
+    this.appendChild(playButtonEl);
+  }
+
+  doPlay(player) {
+    console.log("PLASINDSFDSF");
+    console.log(player);
+    player.playVideo();
   }
 
   loadApi() {

@@ -60,21 +60,43 @@ class YouTubePlayer extends HTMLElement {
   }
 
   addButtons(player) {
+    this.buttonWrapper = document.createElement("div");
+    this.buttonWrapper.classList.add("yt-button-wrapper");
     this.playButton = document.createElement("button");
     this.playButton.innerHTML = "Play";
     this.playButton.classList.add("yt-play-button");
     this.playButton.addEventListener("click", (event) => {
       this.doPlayPause.call(this, event, this.player)
     });
-    this.appendChild(this.playButton);
     this.stopButton = document.createElement("button");
     this.stopButton.innerHTML = "Stop";
     this.stopButton.classList.add("yt-stop-button");
     this.stopButton.addEventListener("click", (event) => {
       this.doStop.call(this, event, this.player)
     });
-    this.appendChild(this.stopButton);
+    this.buttonWrapper.appendChild(this.playButton);
+    this.buttonWrapper.appendChild(this.stopButton);
+    this.appendChild(this.buttonWrapper);
+    this.addSpeedButtons(player);
   }
+
+  addSpeedButtons(player) {
+    this.speedButtons = []
+    const speeds = [
+      [1, "1"],
+      [1.5, "1-5"],
+      [2, "2"],
+      [2.5, "2-5"],
+      [3, "2"],
+    ];
+    speeds.forEach((speed, speedIndex) => {
+      this.speedButtons[speedIndex] = document.createElement("button");
+      this.speedButtons[speedIndex].classList.add("yt-speed-button");
+      this.speedButtons[speedIndex].innerHTML = `${speed[0]}x`;
+      this.buttonWrapper.appendChild(this.speedButtons[speedIndex]);
+    });
+  }
+
 
   doPlayPause(event, player) {
     const buttonEl = event.target;
